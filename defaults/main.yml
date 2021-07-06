@@ -1,0 +1,9 @@
+---
+home-assistant_user: home-assistant
+home-assistant_group: home-assistant
+home-assistant_log_dir: /var/log/home-assistant
+home-assistant_db_dir: "{{ __home-assistant_db_dir }}"
+home-assistant_service: home-assistant
+home-assistant_conf_dir: "{{ __home-assistant_conf_dir }}"
+home-assistant_conf_file: "{{ __home-assistant_conf_dir }}/home-assistant.conf"
+home-assistant_flags: ""

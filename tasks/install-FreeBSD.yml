@@ -1,0 +1,6 @@
+---
+
+- name: Install home-assistant
+  pkgng:
+    name: home-assistant
+    state: present

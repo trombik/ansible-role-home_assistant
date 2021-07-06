@@ -1,0 +1,37 @@
+---
+# tasks file for ansible-role-home-assistant
+
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- include: "install-{{ ansible_os_family }}.yml"
+
+- name: Create log directory
+  file:
+    path: "{{ home-assistant_log_dir }}"
+    mode: 0755
+    owner: "{{ home-assistant_user }}"
+    group: "{{ home-assistant_group }}"
+    state: directory
+  notify: Restart home-assistant
+
+- name: Create db directory
+  file:
+    path: "{{ home-assistant_db_dir }}"
+    mode: 0755
+    owner: "{{ home-assistant_user }}"
+    group: "{{ home-assistant_group }}"
+    state: directory
+  notify: Restart home-assistant
+
+- name: Create home-assistant.conf
+  template:
+    src: home-assistant.conf.j2
+    dest: "{{ home-assistant_conf_file }}"
+    validate: echo %s
+  notify: Restart home-assistant
+
+- name: Start home-assistant
+  service:
+    name: "{{ home-assistant_service }}"
+    enabled: true
+    state: started

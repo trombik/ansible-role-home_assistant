@@ -1,0 +1,3 @@
+---
+__home-assistant_db_dir: /var/db/home-assistant
+__home-assistant_conf_dir: /usr/local/etc/home-assistant
