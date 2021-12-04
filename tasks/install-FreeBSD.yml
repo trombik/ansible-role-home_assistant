@@ -1,5 +1,9 @@
 ---
 
+- name: Install home_assistant_extra_packages
+  ansible.builtin.pkgng:
+    name: "{{ home_assistant_extra_packages }}"
+
 - name: Create home_assistant_group
   ansible.builtin.group:
     name: "{{ home_assistant_group }}"

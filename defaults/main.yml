@@ -8,6 +8,7 @@ home_assistant_conf_file: "{{ __home_assistant_conf_dir }}/configuration.yaml"
 home_assistant_flags: ""
 home_assistant_python_package: homeassistant
 home_assistant_required_packages: "{{ __home_assistant_required_packages }}"
+home_assistant_extra_packages: []
 home_assistant_wrapper_command: "{{ home_assistant_home_dir }}/bin/hass-venv"
 home_assistant_host: 127.0.0.1
 home_assistant_port: 8123
