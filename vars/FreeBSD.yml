@@ -1,3 +1,20 @@
 ---
-__home-assistant_db_dir: /var/db/home-assistant
-__home-assistant_conf_dir: /usr/local/etc/home-assistant
+__home_assistant_db_dir: /var/db/home-assistant
+__home_assistant_conf_dir: /usr/local/etc/home-assistant
+__home_assistant_user: hass
+__home_assistant_group: hass
+__home_assistant_home_dir: /usr/home/hass
+__home_assistant_service: hass
+__home_assistant_required_packages:
+  # XXX note that the hass is installed in python venv. these packages are
+  # required to install non-python packages as a side-effect.
+  #
+  # XXX this is not a complete list of dependencies. it happens to work on my
+  # VMs for ansible. probably i'm missing dependencies.
+  - autoconf
+  - bash
+  - libffi
+  - openssl
+  - py38-pillow
+  - py38-sqlite3
+  - rust

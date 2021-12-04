@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#
+# Managed by ansible
+#
+# a wrapper to activate venv and run hass
+
+dir=`dirname "$0"`
+real_dir=`realpath "${dir}"`
+home=`getent passwd hass | cut -f 6 -d :`
+source "${real_dir}/activate"
+export HOME=${home}
+exec hass

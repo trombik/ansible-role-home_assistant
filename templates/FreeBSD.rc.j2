@@ -1,0 +1,36 @@
+#!/bin/sh
+#
+# Managed by ansible
+
+# PROVIDE: hass
+# REQUIRE: LOGIN
+# BEFORE:  securelevel
+# KEYWORD: shutdown
+
+# Add the following lines to /etc/rc.conf to enable `hass':
+#
+# hass_enable="YES"
+
+. /etc/rc.subr
+
+name="hass"
+rcvar=hass_enable
+
+pidfile="/var/run/${name}.pid"
+hass_user="{{ home_assistant_user }}"
+start_cmd="hass_start"
+hass_program="{{ home_assistant_home_dir }}/bin/hass"
+hass_wrapper="{{ home_assistant_home_dir }}/bin/hass-venv"
+
+load_rc_config "$name"
+: ${hass_enable="NO"}
+
+command_interpreter="{{ home_assistant_home_dir }}/bin/python3"
+command_args=""
+
+hass_start()
+{
+	/usr/sbin/daemon -p ${pidfile} -f -u ${hass_user} ${hass_wrapper}
+}
+
+run_rc_command "$1"

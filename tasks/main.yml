@@ -1,37 +1,29 @@
 ---
 # tasks file for ansible-role-home-assistant
 
-- include_vars: "{{ ansible_os_family }}.yml"
+- name: "Include {{ ansible_os_family }}.yml"
+  include_vars: "{{ ansible_os_family }}.yml"
 
-- include: "install-{{ ansible_os_family }}.yml"
+- name: "Include install-{{ ansible_os_family }}.yml"
+  include: "install-{{ ansible_os_family }}.yml"
 
-- name: Create log directory
-  file:
-    path: "{{ home-assistant_log_dir }}"
-    mode: 0755
-    owner: "{{ home-assistant_user }}"
-    group: "{{ home-assistant_group }}"
-    state: directory
-  notify: Restart home-assistant
-
-- name: Create db directory
-  file:
-    path: "{{ home-assistant_db_dir }}"
-    mode: 0755
-    owner: "{{ home-assistant_user }}"
-    group: "{{ home-assistant_group }}"
-    state: directory
-  notify: Restart home-assistant
-
-- name: Create home-assistant.conf
+- name: Create configuration.yaml
   template:
     src: home-assistant.conf.j2
     dest: "{{ home-assistant_conf_file }}"
     validate: echo %s
+  # XXX not yet implemented
+  when: false
   notify: Restart home-assistant
 
 - name: Start home-assistant
   service:
-    name: "{{ home-assistant_service }}"
+    name: "{{ home_assistant_service }}"
     enabled: true
     state: started
+
+- name: Wait for home_assistant_service to start
+  ansible.builtin.wait_for:
+    port: "{{ home_assistant_port }}"
+    host: "{{ home_assistant_host }}"
+    timeout: "{{ home_assistant_wait_for_timeout }}"

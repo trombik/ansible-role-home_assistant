@@ -1,0 +1,22 @@
+---
+
+- name: Install hass
+  ansible.builtin.pip:
+    name: "{{ home_assistant_python_package }}"
+    chdir: "{{ home_assistant_home_dir }}"
+    state: present
+    umask: "0022"
+    virtualenv: "{{ home_assistant_home_dir }}"
+    # XXX replace python3 with a variable
+    virtualenv_command: python3 -m venv
+  become: yes
+  become_flags: -H -S
+  become_user: "{{ home_assistant_user }}"
+
+- name: Create a wrapper to run hass
+  ansible.builtin.template:
+    src: hass-venv.j2
+    dest: "{{ home_assistant_wrapper_command }}"
+    mode: "0755"
+    owner: "{{ home_assistant_user }}"
+    group: "{{ home_assistant_group }}"

@@ -1,6 +1,40 @@
 ---
 
-- name: Install home-assistant
-  pkgng:
-    name: home-assistant
-    state: present
+- name: Create home_assistant_group
+  ansible.builtin.group:
+    name: "{{ home_assistant_group }}"
+
+- name: Create home_assistant_user
+  ansible.builtin.user:
+    name: "{{ home_assistant_user }}"
+    comment: "home assistant user"
+    create_home: no
+    group: "{{ home_assistant_group }}"
+    home: "{{ home_assistant_home_dir }}"
+    shell: /usr/sbin/nologin
+
+- name: Create home_assistant_home_dir
+  ansible.builtin.file:
+    state: directory
+    path: "{{ home_assistant_home_dir }}"
+    owner: "{{ home_assistant_user }}"
+    group: "{{ home_assistant_group }}"
+    mode: 0755
+
+- name: Install home_assistant_required_packages
+  ansible.builtin.pkgng:
+    name: "{{ home_assistant_required_packages }}"
+
+- name: Create rc.subr script
+  ansible.builtin.template:
+    src: FreeBSD.rc.j2
+    dest: /usr/local/etc/rc.d/hass
+    mode: "0755"
+
+- name: "Install hass with pip in venv"
+  include: install-hass.yml
+
+- name: Enable home_assistant_service
+  ansible.builtin.service:
+    name: "{{ home_assistant_service }}"
+    enabled: yes

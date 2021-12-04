@@ -1,6 +1,6 @@
 ---
 - hosts: localhost
   roles:
-    - ansible-role-home-assistant
+    - ansible-role-home_assistant
   vars:
-    home-assistant_config: ""
+    home_assistant_config: ""
