@@ -21,6 +21,10 @@ Managing Home Assistant.
   After another restart, the "General Configuration" page correctly says
   "Editor disabled because config stored in configuration.yaml".
 
+* As its APIs are not fully implemented, what the role can do is very limited.
+  You will have to manually install integrations, add users, and create
+  tokens.
+
 # Requirements
 
 None
