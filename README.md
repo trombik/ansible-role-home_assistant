@@ -41,6 +41,11 @@ None
 
 # Example Playbook
 
+The example below does:
+
+* install `haproxy` as a reverse proxy for Home Assistant
+* install Home Assistant with `pip` in `venv`
+
 ```yaml
 ---
 - hosts: localhost
