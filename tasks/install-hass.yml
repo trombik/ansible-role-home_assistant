@@ -3,6 +3,7 @@
 - name: Install hass
   ansible.builtin.pip:
     name: "{{ home_assistant_python_package }}"
+    version: "{{ home_assistant_python_package_version }}"
     chdir: "{{ home_assistant_home_dir }}"
     state: present
     umask: "0022"
