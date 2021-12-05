@@ -14,6 +14,13 @@ Managing Home Assistant.
 * Installing integrations (show-stopper: API)
 * Installing Home Assistant from packages (probably, will never be implemented)
 
+## Known issues
+
+* After creating the initial user, Home Assistant asks the basic info, like
+  name and location. It does not respect what in the `configuration.yaml`.
+  After another restart, the "General Configuration" page correctly says
+  "Editor disabled because config stored in configuration.yaml".
+
 # Requirements
 
 None
