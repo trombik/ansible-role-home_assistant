@@ -4,3 +4,20 @@
   service:
     name: "{{ home_assistant_service }}"
     state: restarted
+  notify:
+    - Wait for home_assistant_service to start (in handler)
+
+- name: Wait for home_assistant_service to start (in handler)
+  ansible.builtin.uri:
+    # FIXME what if self-signed TLS certificate?
+    url: "{{ home_assistant_wait_for_url }}"
+    status_code: "{{ home_assistant_wait_for_status }}"
+    headers: "{{ home_assistant_wait_for_headers }}"
+    method: "{{ home_assistant_wait_for_method }}"
+    return_content: yes
+  register: __home_assistant_wait_for_url_in_handler
+  retries: "{{ home_assistant_wait_for_retries }}"
+  delay: "{{ home_assistant_wait_for_delay }}"
+  until:
+    - __home_assistant_wait_for_url_in_handler['status'] == home_assistant_wait_for_status
+    - __home_assistant_wait_for_url_in_handler['content'].find('Initializing') <= 0

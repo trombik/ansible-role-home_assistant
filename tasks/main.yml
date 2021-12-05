@@ -46,15 +46,30 @@
     enabled: true
     state: started
 
-- name: Wait for home_assistant_service to start
+- name: Wait for home_assistant_service to start (in task)
   ansible.builtin.uri:
     # FIXME what if self-signed TLS certificate?
     url: "{{ home_assistant_wait_for_url }}"
     status_code: "{{ home_assistant_wait_for_status }}"
     headers: "{{ home_assistant_wait_for_headers }}"
     method: "{{ home_assistant_wait_for_method }}"
+    return_content: yes
   register: __home_assistant_wait_for_url
   retries: "{{ home_assistant_wait_for_retries }}"
   delay: "{{ home_assistant_wait_for_delay }}"
   until:
+    # XXX the process does other tasks, such as installing integrations, even
+    # after web interface is up and running. wait until it is not
+    # "Initializing".
+    #
+    # XXX hass accepts HTTP connections for a bit (and refuses after that)
+    # even when it's still working on installing integrations during the
+    # startup.
+    #
+    # XXX the startup script cannot kill the subprocess of pip. when you stop
+    # hass, the pip process will reamin.
+    #
+    # XXX to solve the problem, hass should provide API access to its status
+    # (or find out pre-configure API token).
     - __home_assistant_wait_for_url['status'] == home_assistant_wait_for_status
+    - __home_assistant_wait_for_url['content'].find('Initializing') <= 0
