@@ -16,14 +16,13 @@ Managing Home Assistant.
 
 ## Known issues
 
-* After creating the initial user, Home Assistant asks the basic info, like
-  name and location. It does not respect what in the `configuration.yaml`.
-  After another restart, the "General Configuration" page correctly says
-  "Editor disabled because config stored in configuration.yaml".
+After creating the initial user, Home Assistant asks the basic info, like name
+and location. It does not respect what in the `configuration.yaml`.  After
+another restart, the "General Configuration" page correctly says "Editor
+disabled because config stored in configuration.yaml".
 
-* As its APIs are not fully implemented, what the role can do is very limited.
-  You will have to manually install integrations, add users, and create
-  tokens.
+As its APIs are not fully implemented, what the role can do is very limited.
+You will have to manually install integrations, add users, and create tokens.
 
 # Requirements
 
