@@ -2,5 +2,5 @@
 
 - name: Restart home-assistant
   service:
-    name: home-assistant
+    name: "{{ home_assistant_service }}"
     state: restarted

@@ -4,7 +4,7 @@ driver:
 
 driver_config:
   network:
-    - ["forwarded_port", {guest: 8123, host: 8123}]
+    - ["forwarded_port", {guest: 80, host: 8123}]
 transport:
   name: rsync
 

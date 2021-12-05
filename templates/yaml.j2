@@ -1,0 +1,8 @@
+---
+# Managed by ansible
+
+{% if item['type'] | default('raw') == 'raw' %}
+{{ item['content'] }}
+{% else %}
+{{ item['content'] | to_nice_yaml(width = home_assistant_to_nice_yaml_width) }}
+{% endif %}

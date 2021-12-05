@@ -7,23 +7,54 @@
 - name: "Include install-{{ ansible_os_family }}.yml"
   include: "install-{{ ansible_os_family }}.yml"
 
-- name: Create configuration.yaml
-  template:
-    src: home-assistant.conf.j2
-    dest: "{{ home-assistant_conf_file }}"
-    validate: echo %s
-  # XXX not yet implemented
-  when: false
+- name: Create directory for configuration YAML files
+  ansible.builtin.file:
+    path: "{{ home_assistant_conf_dir }}/{{ item['name'] | dirname }}"
+    state: directory
+    owner: "{{ home_assistant_user }}"
+    group: "{{ home_assistant_group }}"
+    mode: "0755"
+  with_items: "{{ home_assistant_config }}"
+  when:
+    - item['state'] | default('present') == 'present'
+  notify: Restart home-assistant
+
+- name: Create configuration YAML files
+  ansible.builtin.template:
+    src: yaml.j2
+    dest: "{{ home_assistant_conf_dir }}/{{ item['name'] }}"
+    mode: "{{ item['mode'] | default('0644') }}"
+    owner: "{{ item['owner'] | default(home_assistant_user) }}"
+    group: "{{ item['group'] | default(home_assistant_group) }}"
+  with_items: "{{ home_assistant_config }}"
+  when:
+    - item['state'] | default('present') == 'present'
+  notify: Restart home-assistant
+
+- name: Delete configuration YAML files
+  ansible.builtin.file:
+    path: "{{ home_assistant_conf_dir }}/{{ item['name'] }}"
+    state: absent
+  with_items: "{{ home_assistant_config }}"
+  when:
+    - item['state'] | default('present') == 'absent'
   notify: Restart home-assistant
 
 - name: Start home-assistant
-  service:
+  ansible.builtin.service:
     name: "{{ home_assistant_service }}"
     enabled: true
     state: started
 
 - name: Wait for home_assistant_service to start
-  ansible.builtin.wait_for:
-    port: "{{ home_assistant_port }}"
-    host: "{{ home_assistant_host }}"
-    timeout: "{{ home_assistant_wait_for_timeout }}"
+  ansible.builtin.uri:
+    # FIXME what if self-signed TLS certificate?
+    url: "{{ home_assistant_wait_for_url }}"
+    status_code: "{{ home_assistant_wait_for_status }}"
+    headers: "{{ home_assistant_wait_for_headers }}"
+    method: "{{ home_assistant_wait_for_method }}"
+  register: __home_assistant_wait_for_url
+  retries: "{{ home_assistant_wait_for_retries }}"
+  delay: "{{ home_assistant_wait_for_delay }}"
+  until:
+    - __home_assistant_wait_for_url['status'] == home_assistant_wait_for_status

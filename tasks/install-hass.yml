@@ -7,8 +7,7 @@
     state: present
     umask: "0022"
     virtualenv: "{{ home_assistant_home_dir }}"
-    # XXX replace python3 with a variable
-    virtualenv_command: python3 -m venv
+    virtualenv_command: "{{ ansible_python['executable'] }} -m venv"
   become: yes
   become_flags: -H -S
   become_user: "{{ home_assistant_user }}"

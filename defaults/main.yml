@@ -5,6 +5,7 @@ home_assistant_service: "{{ __home_assistant_service }}"
 home_assistant_home_dir: "{{ __home_assistant_home_dir }}"
 home_assistant_conf_dir: "{{ home_assistant_home_dir }}/.homeassistant"
 home_assistant_conf_file: "{{ __home_assistant_conf_dir }}/configuration.yaml"
+home_assistant_config: []
 home_assistant_flags: ""
 home_assistant_python_package: homeassistant
 home_assistant_required_packages: "{{ __home_assistant_required_packages }}"
@@ -12,4 +13,17 @@ home_assistant_extra_packages: []
 home_assistant_wrapper_command: "{{ home_assistant_home_dir }}/bin/hass-venv"
 home_assistant_host: 127.0.0.1
 home_assistant_port: 8123
-home_assistant_wait_for_timeout: 300
+home_assistant_to_nice_yaml_width: 65535
+
+home_assistant_wait_for_scheme: http
+home_assistant_wait_for_host: "{{ home_assistant_host }}"
+home_assistant_wait_for_port: "{{ home_assistant_port }}"
+# XXX use Web interface for verification as I cannot find how to pre-configure
+# REST API access token in configuration file (.storage/auth, maybe)
+home_assistant_wait_for_path: /
+home_assistant_wait_for_url: "{{ home_assistant_wait_for_scheme }}://{{ home_assistant_wait_for_host }}:{{ home_assistant_wait_for_port }}{{ home_assistant_wait_for_path }}"
+home_assistant_wait_for_headers: {}
+home_assistant_wait_for_method: GET
+home_assistant_wait_for_status: 200
+home_assistant_wait_for_retries: 10
+home_assistant_wait_for_delay: 60
