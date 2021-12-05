@@ -1,6 +1,18 @@
-# ansible-role-home-assistant
+# `trombik.home_assistant`
 
-A brief description of the role goes here.
+Managing Home Assistant.
+
+## Implemented features
+
+* Installing Home Assistant with pip in a `venv`
+* Managing configuration YAML files
+
+## Not implemented features
+
+* Managing users (and authentication tokens)
+* Managing API configuration (show-stopper: user management)
+* Installing integrations (show-stopper: API)
+* Installing Home Assistant from packages (probably, will never be implemented)
 
 # Requirements
 
