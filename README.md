@@ -2,6 +2,12 @@
 
 Managing Home Assistant.
 
+The role installs it with `ansible` `pip` module and `python -m venv`.
+
+Home Assistant is very picky about dependencies. The upstream even created an
+Linux distribution for it. The dependencies have many `==x.y.z`. The author
+does not think it is feasible to make a stable package for it.
+
 ## Implemented features
 
 * Installing Home Assistant with pip in a `venv`
@@ -23,6 +29,10 @@ disabled because config stored in configuration.yaml".
 
 As its APIs are not fully implemented, what the role can do is very limited.
 You will have to manually install integrations, add users, and create tokens.
+
+Some non-python dependencies are installed by the role, but the author are not
+sure they are correct because the complete dependencies are not documented. If
+you find missing dependencies, please fill an Issue.
 
 # Requirements
 
