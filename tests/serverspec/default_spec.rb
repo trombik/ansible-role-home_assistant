@@ -1,7 +1,6 @@
 require "spec_helper"
 require "serverspec"
 
-package = "homeassistant"
 user    = "hass"
 group   = user
 service = case os[:family]
@@ -10,16 +9,16 @@ service = case os[:family]
           end
 ports   = [80, 8123]
 home = "/usr/home/#{user}"
-venv_dir = "#{home}"
+venv_dir = home
 venv_bin_dir = "#{venv_dir}/bin"
 config_dir = "#{home}/.homeassistant"
 config = "#{config_dir}/configuration.yaml"
 
-describe group "#{group}" do
+describe group group do
   it { should exist }
 end
 
-describe user "#{user}" do
+describe user user do
   it { should exist }
 end
 
@@ -66,7 +65,16 @@ describe file venv_bin_dir do
   it { should be_grouped_into group }
 end
 
-describe service "#{service}" do
+describe command "cd #{venv_dir} && . bin/activate; pip3 list" do
+  its(:exit_status) { should eq 0 }
+  # XXX pip warns:
+  # WARNING: You are using pip version ...
+  #
+  # its(:stderr) { should eq "" }
+  its(:stdout) { should match(/^homeassistant\s+/) }
+end
+
+describe service service do
   it { should be_enabled }
   it { should be_running }
 end
