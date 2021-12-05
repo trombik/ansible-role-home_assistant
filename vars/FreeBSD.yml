@@ -17,4 +17,5 @@ __home_assistant_required_packages:
   - openssl
   - py38-pillow
   - py38-sqlite3
+  - py38-wheel
   - rust
