@@ -110,6 +110,8 @@
         timeout connect 5s
         timeout client 10s
         timeout server 10s
+        # increase tunnel timeout for websocket
+        timeout tunnel 3600s
         option  httplog
         option  dontlognull
         retries 3
