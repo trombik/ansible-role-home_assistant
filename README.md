@@ -4,7 +4,7 @@ Managing Home Assistant.
 
 The role installs it with `ansible` `pip` module and `python -m venv`.
 
-Home Assistant is very picky about dependencies. The upstream even created an
+Home Assistant is very picky about dependencies. The upstream even created a
 Linux distribution for it. The dependencies have many `==x.y.z`. The author
 does not think it is feasible to make a stable package for it.
 
